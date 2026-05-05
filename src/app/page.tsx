@@ -5,9 +5,14 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { NoteList } from "@/components/layout/NoteList";
 import { NoteEditor } from "@/components/layout/NoteEditor";
 import { ImportExport } from "@/components/ImportExport";
+import { SearchBar } from "@/components/ui/SearchBar";
 import { useNoteStore } from "@/stores/noteStore";
 import { useCategoryStore } from "@/stores/categoryStore";
 import { useUIStore } from "@/stores/uiStore";
+
+function HeaderSearch() {
+  return <SearchBar />;
+}
 
 export default function Home() {
   const { loadNotes } = useNoteStore();
@@ -41,16 +46,9 @@ export default function Home() {
     <div className="flex h-screen bg-white dark:bg-gray-950">
       <Sidebar />
       <div className="flex flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-gray-200 px-4 py-2 dark:border-gray-700">
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            <kbd className="rounded bg-gray-100 px-1.5 py-0.5 text-xs dark:bg-gray-800">
-              ⌘K
-            </kbd>{" "}
-            Search{" "}
-            <kbd className="ml-2 rounded bg-gray-100 px-1.5 py-0.5 text-xs dark:bg-gray-800">
-              ⌘N
-            </kbd>{" "}
-            New Note
+        <header className="flex items-center gap-2 border-b border-gray-200 px-3 py-1.5 dark:border-gray-700">
+          <div className="flex-1">
+            <HeaderSearch />
           </div>
           <ImportExport />
         </header>

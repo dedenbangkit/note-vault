@@ -36,7 +36,7 @@ export function SearchBar() {
       <div className="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+          className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -51,14 +51,14 @@ export function SearchBar() {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search notes... (Cmd+K)"
+          placeholder="Search... (⌘K)"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsSearchOpen(true)}
           className={cn(
-            "w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-4 text-sm",
+            "w-full rounded border border-gray-300 bg-white py-1 pl-7 pr-3 text-xs",
             "placeholder:text-gray-400",
-            "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+            "focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent",
             "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
           )}
         />
@@ -68,11 +68,11 @@ export function SearchBar() {
               setSearchQuery("");
               setIsSearchOpen(false);
             }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
+              className="h-3 w-3"
               viewBox="0 0 20 20"
               fill="currentColor"
             >

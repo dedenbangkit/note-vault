@@ -66,11 +66,11 @@ export function NoteForm({ note, onClose }: NoteFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3">
       <div>
         <label
           htmlFor="title"
-          className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300"
         >
           Title
         </label>
@@ -85,7 +85,7 @@ export function NoteForm({ note, onClose }: NoteFormProps) {
       <div>
         <label
           htmlFor="content"
-          className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300"
         >
           Content
         </label>
@@ -94,14 +94,14 @@ export function NoteForm({ note, onClose }: NoteFormProps) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Write your note..."
-          rows={8}
+          rows={6}
         />
       </div>
 
       <div>
         <label
           htmlFor="category"
-          className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300"
         >
           Category
         </label>
@@ -109,7 +109,7 @@ export function NoteForm({ note, onClose }: NoteFormProps) {
           id="category"
           value={categoryId || ""}
           onChange={(e) => setCategoryId(e.target.value || null)}
-          className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          className="flex h-7 w-full rounded border border-gray-300 bg-white px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
         >
           <option value="">No category</option>
           {categories.map((cat) => (
@@ -123,7 +123,7 @@ export function NoteForm({ note, onClose }: NoteFormProps) {
       <div>
         <label
           htmlFor="tags"
-          className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300"
         >
           Tags
         </label>
@@ -133,16 +133,16 @@ export function NoteForm({ note, onClose }: NoteFormProps) {
           onChange={(e) => setTagsInput(e.target.value)}
           placeholder="tag1, tag2, tag3"
         />
-        <p className="mt-1 text-xs text-gray-500">Separate tags with commas</p>
+        <p className="mt-0.5 text-[10px] text-gray-500">Separate tags with commas</p>
       </div>
 
-      <div className="flex justify-end gap-2 pt-2">
+      <div className="flex justify-end gap-2 pt-1">
         {onClose && (
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancel
           </Button>
         )}
-        <Button type="submit">{note ? "Update Note" : "Create Note"}</Button>
+        <Button type="submit">{note ? "Update" : "Create"}</Button>
       </div>
     </form>
   );

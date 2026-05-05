@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface UIStore {
   selectedNoteId: string | null;
-  activeCategoryId: string | null;
+  activeCategoryId: string | null | "uncategorized";
   searchQuery: string;
   isSearchOpen: boolean;
   isDarkMode: boolean;
@@ -10,7 +10,7 @@ interface UIStore {
   isImportModalOpen: boolean;
 
   setSelectedNoteId: (id: string | null) => void;
-  setActiveCategoryId: (id: string | null) => void;
+  setActiveCategoryId: (id: string | null | "uncategorized") => void;
   setSearchQuery: (query: string) => void;
   setIsSearchOpen: (isOpen: boolean) => void;
   toggleDarkMode: () => void;

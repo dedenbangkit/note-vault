@@ -20,6 +20,7 @@ interface NoteStore {
   togglePin: (id: string) => Promise<void>;
   getNoteById: (id: string) => Note | undefined;
   getNotesByCategory: (categoryId: string | null) => Note[];
+  clearCategoryFromNotes: (categoryId: string) => void;
   clearAllNotes: () => Promise<void>;
   importNotes: (notes: Note[]) => Promise<void>;
 }
@@ -87,6 +88,14 @@ export const useNoteStore = create<NoteStore>((set, get) => ({
       return get().notes;
     }
     return get().notes.filter((note) => note.categoryId === categoryId);
+  },
+
+  clearCategoryFromNotes: (categoryId) => {
+    set((state) => ({
+      notes: state.notes.map((note) =>
+        note.categoryId === categoryId ? { ...note, categoryId: null } : note
+      ),
+    }));
   },
 
   clearAllNotes: async () => {

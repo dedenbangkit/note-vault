@@ -58,6 +58,8 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
   },
 
   deleteCategory: async (id) => {
+    // Clear categoryId from notes that belong to this category
+    await db.notes.where("categoryId").equals(id).modify({ categoryId: null });
     await db.categories.delete(id);
     set((state) => ({
       categories: state.categories.filter((cat) => cat.id !== id),

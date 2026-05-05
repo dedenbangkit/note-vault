@@ -34,7 +34,7 @@ export function NoteEditor() {
       <div className="flex h-full flex-1 flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-16 w-16 text-gray-300 dark:text-gray-600"
+          className="h-12 w-12 text-gray-300 dark:text-gray-600"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -46,7 +46,7 @@ export function NoteEditor() {
             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
           />
         </svg>
-        <p className="mt-4 text-gray-500 dark:text-gray-400">
+        <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
           Select a note to view or edit
         </p>
       </div>
@@ -55,32 +55,32 @@ export function NoteEditor() {
 
   return (
     <div className="flex h-full flex-1 flex-col bg-white dark:bg-gray-950">
-      <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-700">
+        <div className="flex items-center gap-2">
           {category && (
             <span
-              className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium"
+              className="inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-medium"
               style={{
                 backgroundColor: `${category.color}20`,
                 color: category.color,
               }}
             >
               <span
-                className="h-1.5 w-1.5 rounded-full"
+                className="h-1 w-1 rounded-full"
                 style={{ backgroundColor: category.color }}
               />
               {category.name}
             </span>
           )}
           {note.isPinned && (
-            <span className="text-xs text-yellow-500">Pinned</span>
+            <span className="text-[10px] text-yellow-500">Pinned</span>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <CopyButton text={note.content} />
           <button
             onClick={() => togglePin(note.id)}
-            className={`rounded p-2 ${
+            className={`rounded p-1 ${
               note.isPinned
                 ? "text-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-950"
                 : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -89,7 +89,7 @@ export function NoteEditor() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-3.5 w-3.5"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -109,30 +109,30 @@ export function NoteEditor() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
-        <h1 className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
+      <div className="flex-1 overflow-y-auto p-4">
+        <h1 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-100">
           {note.title || "Untitled"}
         </h1>
 
-        <div className="mb-6 flex flex-wrap gap-2">
+        <div className="mb-3 flex flex-wrap gap-1">
           {note.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+              className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] text-gray-600 dark:bg-gray-800 dark:text-gray-400"
             >
               #{tag}
             </span>
           ))}
         </div>
 
-        <div className="prose prose-gray max-w-none dark:prose-invert">
-          <pre className="whitespace-pre-wrap font-sans text-gray-700 dark:text-gray-300">
+        <div className="prose prose-sm prose-gray max-w-none dark:prose-invert">
+          <pre className="whitespace-pre-wrap font-sans text-xs leading-relaxed text-gray-700 dark:text-gray-300">
             {note.content}
           </pre>
         </div>
       </div>
 
-      <div className="border-t border-gray-200 px-6 py-3 text-xs text-gray-400 dark:border-gray-700">
+      <div className="border-t border-gray-200 px-4 py-2 text-[10px] text-gray-400 dark:border-gray-700">
         <span>Created: {formatDateTime(note.createdAt)}</span>
         <span className="mx-2">•</span>
         <span>Updated: {formatDateTime(note.updatedAt)}</span>
@@ -152,7 +152,7 @@ export function NoteEditor() {
         onClose={() => setIsDeleteModalOpen(false)}
         title="Delete Note"
       >
-        <p className="mb-4 text-gray-600 dark:text-gray-400">
+        <p className="mb-3 text-xs text-gray-600 dark:text-gray-400">
           Are you sure you want to delete &quot;{note.title || "Untitled"}&quot;? This
           action cannot be undone.
         </p>

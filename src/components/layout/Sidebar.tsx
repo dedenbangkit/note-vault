@@ -12,9 +12,11 @@ import { cn } from "@/lib/utils";
 export function Sidebar() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [deletingCategory, setDeletingCategory] = useState<{ id: string; name: string; noteCount: number } | null>(null);
+  const [editingCategory, setEditingCategory] = useState<{ id: string; name: string } | null>(null);
 
-  const { categories, createCategory, deleteCategory } = useCategoryStore();
-  const { notes } = useNoteStore();
+  const { categories, createCategory, updateCategory, deleteCategory } = useCategoryStore();
+  const { notes, clearCategoryFromNotes } = useNoteStore();
   const {
     activeCategoryId,
     setActiveCategoryId,
@@ -33,11 +35,39 @@ export function Sidebar() {
     }
   };
 
-  const getCategoryNoteCount = (categoryId: string | null) => {
+  const getCategoryNoteCount = (categoryId: string | null | "uncategorized") => {
     if (categoryId === null) {
       return notes.length;
     }
+    if (categoryId === "uncategorized") {
+      return notes.filter((note) => !note.categoryId).length;
+    }
     return notes.filter((note) => note.categoryId === categoryId).length;
+  };
+
+  const handleDeleteClick = (categoryId: string, categoryName: string) => {
+    const noteCount = getCategoryNoteCount(categoryId);
+    if (noteCount > 0) {
+      setDeletingCategory({ id: categoryId, name: categoryName, noteCount });
+    } else {
+      deleteCategory(categoryId);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (deletingCategory) {
+      clearCategoryFromNotes(deletingCategory.id);
+      await deleteCategory(deletingCategory.id);
+      setDeletingCategory(null);
+    }
+  };
+
+  const handleEditCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingCategory && editingCategory.name.trim()) {
+      await updateCategory(editingCategory.id, { name: editingCategory.name.trim() });
+      setEditingCategory(null);
+    }
   };
 
   return (
@@ -48,8 +78,8 @@ export function Sidebar() {
           isSidebarOpen ? "w-64" : "w-0 overflow-hidden"
         )}
       >
-        <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+        <div className="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-700">
+          <h1 className="text-sm font-bold text-gray-900 dark:text-gray-100">
             Note Vault
           </h1>
           <div className="flex items-center gap-1">
@@ -102,26 +132,40 @@ export function Sidebar() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4">
-          <div className="mb-4">
+        <div className="flex-1 overflow-y-auto p-2">
+          <div className="mb-2 space-y-0.5">
             <button
               onClick={() => setActiveCategoryId(null)}
               className={cn(
-                "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "flex w-full items-center justify-between rounded px-2 py-1 text-xs font-medium transition-colors",
                 activeCategoryId === null
                   ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
                   : "text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800"
               )}
             >
               <span>All Notes</span>
-              <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs dark:bg-gray-700">
+              <span className="rounded-full bg-gray-200 px-1.5 py-0.5 text-[10px] dark:bg-gray-700">
                 {getCategoryNoteCount(null)}
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveCategoryId("uncategorized")}
+              className={cn(
+                "flex w-full items-center justify-between rounded px-2 py-1 text-xs font-medium transition-colors",
+                activeCategoryId === "uncategorized"
+                  ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
+                  : "text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800"
+              )}
+            >
+              <span>Uncategorized</span>
+              <span className="rounded-full bg-gray-200 px-1.5 py-0.5 text-[10px] dark:bg-gray-700">
+                {getCategoryNoteCount("uncategorized")}
               </span>
             </button>
           </div>
 
-          <div className="mb-2 flex items-center justify-between">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+          <div className="mb-1 flex items-center justify-between">
+            <h2 className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
               Categories
             </h2>
             <button
@@ -143,12 +187,12 @@ export function Sidebar() {
             </button>
           </div>
 
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {categories.map((category) => (
               <div
                 key={category.id}
                 className={cn(
-                  "group flex items-center justify-between rounded-md px-3 py-2 text-sm transition-colors",
+                  "group flex items-center justify-between rounded px-2 py-1 text-xs transition-colors",
                   activeCategoryId === category.id
                     ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
                     : "text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800"
@@ -156,21 +200,31 @@ export function Sidebar() {
               >
                 <button
                   onClick={() => setActiveCategoryId(category.id)}
-                  className="flex flex-1 items-center gap-2"
+                  className="flex flex-1 items-center gap-1.5 min-w-0"
                 >
                   <span
-                    className="h-2.5 w-2.5 rounded-full"
+                    className="h-2 w-2 shrink-0 rounded-full"
                     style={{ backgroundColor: category.color }}
                   />
                   <span className="truncate">{category.name}</span>
                 </button>
-                <div className="flex items-center gap-1">
-                  <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs dark:bg-gray-700">
-                    {getCategoryNoteCount(category.id)}
-                  </span>
+                <div className="flex items-center gap-0.5">
                   <button
-                    onClick={() => deleteCategory(category.id)}
-                    className="hidden rounded p-1 text-gray-400 hover:bg-red-100 hover:text-red-600 group-hover:block dark:hover:bg-red-900"
+                    onClick={() => setEditingCategory({ id: category.id, name: category.name })}
+                    className="rounded p-0.5 text-gray-400 opacity-0 hover:bg-gray-200 hover:text-gray-600 group-hover:opacity-100 dark:hover:bg-gray-700"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(category.id, category.name)}
+                    className="rounded p-0.5 text-gray-400 opacity-0 hover:bg-red-100 hover:text-red-600 group-hover:opacity-100 dark:hover:bg-red-900"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -185,6 +239,9 @@ export function Sidebar() {
                       />
                     </svg>
                   </button>
+                  <span className="rounded-full bg-gray-200 px-1.5 py-0.5 text-[10px] dark:bg-gray-700">
+                    {getCategoryNoteCount(category.id)}
+                  </span>
                 </div>
               </div>
             ))}
@@ -204,7 +261,7 @@ export function Sidebar() {
             placeholder="Category name"
             autoFocus
           />
-          <div className="mt-4 flex justify-end gap-2">
+          <div className="mt-3 flex justify-end gap-2">
             <Button
               type="button"
               variant="secondary"
@@ -213,6 +270,51 @@ export function Sidebar() {
               Cancel
             </Button>
             <Button type="submit">Create</Button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal
+        isOpen={!!deletingCategory}
+        onClose={() => setDeletingCategory(null)}
+        title="Delete Category"
+      >
+        <p className="text-xs text-gray-600 dark:text-gray-400">
+          Are you sure you want to delete &quot;{deletingCategory?.name}&quot;?
+          This category has <strong>{deletingCategory?.noteCount}</strong> note{deletingCategory?.noteCount !== 1 ? 's' : ''}.
+          The notes will remain but will have no category.
+        </p>
+        <div className="mt-3 flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setDeletingCategory(null)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Delete
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={!!editingCategory}
+        onClose={() => setEditingCategory(null)}
+        title="Edit Category"
+      >
+        <form onSubmit={handleEditCategory}>
+          <Input
+            value={editingCategory?.name || ""}
+            onChange={(e) => setEditingCategory(prev => prev ? { ...prev, name: e.target.value } : null)}
+            placeholder="Category name"
+            autoFocus
+          />
+          <div className="mt-3 flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setEditingCategory(null)}
+            >
+              Cancel
+            </Button>
+            <Button type="submit">Save</Button>
           </div>
         </form>
       </Modal>

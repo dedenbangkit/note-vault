@@ -98,7 +98,7 @@ export function ImportExport() {
 
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <input
           ref={fileInputRef}
           type="file"
@@ -107,11 +107,11 @@ export function ImportExport() {
           className="hidden"
         />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <select
             value={importMode}
             onChange={(e) => setImportMode(e.target.value as ImportMode)}
-            className="h-8 rounded-md border border-gray-300 bg-white px-2 text-xs dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="h-6 rounded border border-gray-300 bg-white px-1.5 text-[10px] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           >
             <option value="merge">Merge</option>
             <option value="replace">Replace</option>
@@ -132,17 +132,17 @@ export function ImportExport() {
         title={importError ? "Import Error" : "Import Complete"}
       >
         {importError ? (
-          <div className="text-red-600 dark:text-red-400">{importError}</div>
+          <div className="text-xs text-red-600 dark:text-red-400">{importError}</div>
         ) : importResult ? (
-          <div className="text-gray-700 dark:text-gray-300">
+          <div className="text-xs text-gray-700 dark:text-gray-300">
             <p>Successfully imported:</p>
-            <ul className="mt-2 list-inside list-disc">
+            <ul className="mt-1 list-inside list-disc">
               <li>{importResult.notes} notes</li>
               <li>{importResult.categories} categories</li>
             </ul>
           </div>
         ) : null}
-        <div className="mt-4 flex justify-end">
+        <div className="mt-3 flex justify-end">
           <Button onClick={() => setIsImportModalOpen(false)}>Close</Button>
         </div>
       </Modal>
