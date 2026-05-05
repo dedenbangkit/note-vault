@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "exported_at": "2024-01-15T10:30:00.000Z",
+  "notes": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "title": "Getting Started with Note Vault",
+      "content": "Welcome to Note Vault! This is your first note.\n\nFeatures:\n- Create and organize notes by category\n- Pin important notes to the top\n- Search across all notes with fuzzy matching\n- Export and import your data\n- Dark mode support",
+      "categoryId": "550e8400-e29b-41d4-a716-446655440010",
+      "tags": ["welcome", "tutorial"],
+      "isPinned": true,
+      "createdAt": 1705312200000,
+      "updatedAt": 1705312200000
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "title": "Meeting Notes - Project Kickoff",
+      "content": "Attendees: Alice, Bob, Charlie\n\nAgenda:\n1. Project timeline review\n2. Resource allocation\n3. Risk assessment\n\nAction items:\n- Alice: Prepare technical spec by Friday\n- Bob: Set up development environment\n- Charlie: Schedule stakeholder meeting",
+      "categoryId": "550e8400-e29b-41d4-a716-446655440011",
+      "tags": ["meeting", "project"],
+      "isPinned": false,
+      "createdAt": 1705225800000,
+      "updatedAt": 1705398600000
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440003",
+      "title": "API Endpoint Reference",
+      "content": "GET /api/users - List all users\nPOST /api/users - Create new user\nGET /api/users/:id - Get user by ID\nPUT /api/users/:id - Update user\nDELETE /api/users/:id - Delete user",
+      "categoryId": "550e8400-e29b-41d4-a716-446655440012",
+      "tags": ["api", "reference", "backend"],
+      "isPinned": false,
+      "createdAt": 1705139400000,
+      "updatedAt": 1705139400000
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440004",
+      "title": "Quick Note",
+      "content": "Remember to update dependencies next week.",
+      "categoryId": null,
+      "tags": [],
+      "isPinned": false,
+      "createdAt": 1705053000000,
+      "updatedAt": 1705053000000
+    }
+  ],
+  "categories": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440010",
+      "name": "Personal",
+      "color": "#22C55E",
+      "createdAt": 1705312200000
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440011",
+      "name": "Work",
+      "color": "#3B82F6",
+      "createdAt": 1705225800000
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440012",
+      "name": "Development",
+      "color": "#8B5CF6",
+      "createdAt": 1705139400000
+    }
+  ]
+}
